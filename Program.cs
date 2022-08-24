@@ -1,11 +1,15 @@
 using EmptyParcelLocker.API.Data;
+using EmptyParcelLocker.API.Repositories;
+using EmptyParcelLocker.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddDbContext<ParcelLockerDbContext>();
+builder.Services.AddDbContext<EmptyParcelLockerDbContext>();
+builder.Services.AddScoped<IEmptyParcelLockerRepository, SqlEmptyParcelLockerRepository>();
+builder.Services.AddScoped<IEmptyParcelLockerService, EmptyParcelLockerService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

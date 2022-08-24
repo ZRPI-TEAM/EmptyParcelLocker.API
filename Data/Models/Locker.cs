@@ -9,11 +9,12 @@ public class Locker
     public Guid Id { get; set; }
     public bool IsEmpty { get; set; }
     
-    [ForeignKey($"{nameof(ParcelLocker)}")]
-    public Guid ParcelLockerId { get; set; }
-    public virtual ParcelLocker ParcelLocker { get; set; }
+    [ForeignKey(nameof(ParcelLocker))]
+    public Guid ParcelLocerId { get; set; }
     
-    [ForeignKey($"{nameof(LockerType)}")]
+    public ParcelLocker ParcelLocker { get; set; }
+    
+    [ForeignKey(nameof(LockerType))] 
     public Guid LockerTypeId { get; set; }
-    public virtual LockerType LockerType { get; set; }
+    public LockerType LockerType { get; set; }
 }

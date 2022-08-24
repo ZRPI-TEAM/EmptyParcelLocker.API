@@ -29,7 +29,7 @@
 
 ---
 
-### Address
+### ParcelLockerAddress
 
 | Field           | Type         | Description                              |
 |-----------------|--------------|------------------------------------------|
@@ -67,7 +67,7 @@ Get parcel locker list from database
 
 Get specified parcel locker from database
 
-> **PUT** _/parcelLocker/{parcelLockerId}_
+> **PUT** _/parcelLocker/{parcelLocker}_
 
 Update parcel locker.
 
@@ -95,7 +95,7 @@ Get locker types.
 
 Get specified locker type.
 
-### Address
+### ParcelLockerAddress
 
 > **GET** _/address_
 
