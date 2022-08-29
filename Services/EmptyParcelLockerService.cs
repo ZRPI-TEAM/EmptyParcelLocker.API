@@ -62,4 +62,14 @@ public class EmptyParcelLockerService : IEmptyParcelLockerService
     {
         return await _emptyParcelLockerRepository.GetLockerTypeAsync(lockerTypeId);
     }
+
+    public async Task UpdateLockerTypeAsync(LockerType lockerType)
+    {
+        if (lockerType == null)
+        {
+            throw new NullReferenceException();
+        }
+        
+        await _emptyParcelLockerRepository.UpdateLockerTypeAsync(lockerType);
+    }
 }

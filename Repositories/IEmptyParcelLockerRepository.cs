@@ -18,4 +18,5 @@ public interface IEmptyParcelLockerRepository
     // LockerTypes
     Task<List<LockerType>> GetLockerTypesAsync();
     Task<LockerType?> GetLockerTypeAsync(Guid lockerTypeId);
+    Task UpdateLockerTypeAsync(LockerType lockerType);
 }

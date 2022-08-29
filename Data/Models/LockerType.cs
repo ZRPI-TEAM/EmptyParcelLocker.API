@@ -5,15 +5,10 @@ namespace EmptyParcelLocker.API.Data.Models;
 
 public class LockerType
 {
-    public LockerType()
-    {
-        Lockers = new Collection<Locker>();
-    }
-    
     [Key]
     public Guid Id { get; set; }
-
-    public ICollection<Locker> Lockers { get; set; }
+    
+    [Required]
     public string Name { get; set; }
     public int MaxHeight { get; set; }
     public int MaxWidth { get; set; }

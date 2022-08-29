@@ -11,8 +11,8 @@ public class Locker
     
     [ForeignKey(nameof(ParcelLocker))]
     public Guid ParcelLocerId { get; set; }
-    
     public ParcelLocker ParcelLocker { get; set; }
+    
     
     [ForeignKey(nameof(LockerType))] 
     public Guid LockerTypeId { get; set; }

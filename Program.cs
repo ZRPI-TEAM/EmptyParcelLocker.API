@@ -1,4 +1,5 @@
 using EmptyParcelLocker.API.Data;
+using EmptyParcelLocker.API.ExtensionMethods;
 using EmptyParcelLocker.API.Repositories;
 using EmptyParcelLocker.API.Services;
 
@@ -16,6 +17,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+app.SeedDatabase();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
