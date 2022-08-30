@@ -7,8 +7,9 @@ public static class WebApplicationExtensionMethods
 {
     public static void SeedDatabase(this WebApplication app)
     {
-        var service = app.Services.GetService(typeof(EmptyParcelLockerService)) as EmptyParcelLockerService;
-        var emptyParcelLockerDbSeeder = new EmptyParcelLockerDbSeeder(service);
+        using var scopes = app.Services.CreateScope();
+        var emptyParcelLockerService = scopes.ServiceProvider.GetRequiredService<IEmptyParcelLockerService>();
+        var emptyParcelLockerDbSeeder = new EmptyParcelLockerDbSeeder(emptyParcelLockerService);
         emptyParcelLockerDbSeeder.SeedAsync().Wait();
     }
 }

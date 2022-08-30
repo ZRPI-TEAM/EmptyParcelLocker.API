@@ -15,7 +15,7 @@ public class SqlEmptyParcelLockerRepository : IEmptyParcelLockerRepository
 
     public async Task<List<ParcelLocker>> GetParcelLockersAsync()
     {
-        return await _context.ParcelLockers.Include(nameof(Locker)).ToListAsync();
+        return await _context.ParcelLockers.ToListAsync();
     }
 
     public async Task<ParcelLocker?> GetParcelLockerAsync(Guid parcelLockerId)
@@ -44,12 +44,12 @@ public class SqlEmptyParcelLockerRepository : IEmptyParcelLockerRepository
 
     public async Task<List<Locker>> GetLockersAsync()
     {
-        return await _context.Lockers.Include(nameof(ParcelLocker)).ToListAsync();
+        return await _context.Lockers.Include(nameof(LockerType)).Include(nameof(ParcelLocker)).ToListAsync();
     }
 
     public async Task<Locker?> GetLockerAsync(Guid lockerId)
     {
-        return await _context.Lockers.FirstOrDefaultAsync(l => l.Id == lockerId);
+        return await _context.Lockers.Include(nameof(LockerType)).Include(nameof(ParcelLocker)).FirstOrDefaultAsync(l => l.Id == lockerId);
     }
 
     public async Task UpdateLockerAsync(Locker locker)

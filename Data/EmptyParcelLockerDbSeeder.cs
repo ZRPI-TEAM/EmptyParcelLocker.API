@@ -38,8 +38,13 @@ public class EmptyParcelLockerDbSeeder
         for (var i = 0; i < parcelLockersNumber; i++)
         {
             var parcelLocker = await CreateNewParcelLockerAsync("KRA000", new[] {"Kwiatowa", "00", "", "00-000", "Kraków"});
-            await _emptyParcelLockerService.UpdateParcelLockerAsync(parcelLocker);    
-        }
+            await _emptyParcelLockerService.UpdateParcelLockerAsync(parcelLocker);
+
+            foreach (var locker in parcelLocker.Lockers)
+            {
+                await _emptyParcelLockerService.UpdateLockerAsync(locker);
+            }
+        } 
     }
 
     private async Task<ParcelLocker> CreateNewParcelLockerAsync(string parcelLockerName, string[] parcelLockerAddress)
@@ -60,7 +65,7 @@ public class EmptyParcelLockerDbSeeder
     {
         var lockerTypes = await _emptyParcelLockerService.GetLockerTypesAsync();
 
-        var lockers = new Collection<Locker>();
+        var lockers = new List<Locker>();
         var lockerNumber = _random.Next(12, 25);
         for (var i = 0; i < lockerNumber; i++)
         {
