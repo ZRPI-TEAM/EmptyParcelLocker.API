@@ -73,10 +73,9 @@ public class EmptyParcelLockerDbSeeder
             lockers.Add(new Locker
             {
                 Id = Guid.NewGuid(), 
-                IsEmpty = true, 
+                IsEmpty = _random.Next(0, 100) % 2 == 0, 
                 LockerType = randomLockerType, 
                 LockerTypeId = randomLockerType.Id,
-                ParcelLocker = parcelLocker,
                 ParcelLocerId = parcelLocker.Id
             });
         }

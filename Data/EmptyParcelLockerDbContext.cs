@@ -39,7 +39,6 @@ public class EmptyParcelLockerDbContext : DbContext
                 LockerTypeId = randomLockerType.Id,
                 LockerType = randomLockerType,
                 ParcelLocerId = parcelLocker.Id,
-                ParcelLocker = parcelLocker,
             };
 
             lockers.Add(newLocker);

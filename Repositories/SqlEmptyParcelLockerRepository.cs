@@ -15,12 +15,30 @@ public class SqlEmptyParcelLockerRepository : IEmptyParcelLockerRepository
 
     public async Task<List<ParcelLocker>> GetParcelLockersAsync()
     {
-        return await _context.ParcelLockers.ToListAsync();
+        var parcelLockers = await _context.ParcelLockers.ToListAsync();
+        foreach (var parcelLocker in parcelLockers)
+        {
+            parcelLocker.Lockers = await _context.Lockers.Where(l => l.ParcelLocerId == parcelLocker.Id).ToListAsync();
+            foreach (var locker in parcelLocker.Lockers)
+            {
+                locker.LockerType = await _context.LockerTypes.FirstOrDefaultAsync(l => l.Id == locker.LockerTypeId);
+            }
+        }
+
+        return parcelLockers;
     }
 
     public async Task<ParcelLocker?> GetParcelLockerAsync(Guid parcelLockerId)
     {
-        return await _context.ParcelLockers.FirstOrDefaultAsync(p => p.Id == parcelLockerId);
+        var parcelLocker = await _context.ParcelLockers.FirstOrDefaultAsync(p => p.Id == parcelLockerId);
+        parcelLocker.Lockers = await _context.Lockers.Where(l => l.ParcelLocerId == parcelLocker.Id).ToListAsync();
+
+        foreach (var locker in parcelLocker.Lockers)
+        {
+            locker.LockerType = await _context.LockerTypes.FirstOrDefaultAsync(l => l.Id == locker.LockerTypeId);
+        }
+        
+        return parcelLocker;
     }
 
     public async Task UpdateParcelLockerAsync(ParcelLocker parcelLocker)
@@ -28,7 +46,7 @@ public class SqlEmptyParcelLockerRepository : IEmptyParcelLockerRepository
         if (_context.ParcelLockers.Any(p => p.Id == parcelLocker.Id))
         {
             var existingParcelLocker = await _context.ParcelLockers.FirstAsync(p => p.Id == parcelLocker.Id);
-            
+
             // existingParcelLocker.Lockers = parcelLocker.Lockers;
             existingParcelLocker.Name = parcelLocker.Name;
             existingParcelLocker.Address = parcelLocker.Address;
@@ -38,18 +56,26 @@ public class SqlEmptyParcelLockerRepository : IEmptyParcelLockerRepository
         {
             await _context.ParcelLockers.AddAsync(parcelLocker);
         }
-        
+
         await _context.SaveChangesAsync();
     }
 
     public async Task<List<Locker>> GetLockersAsync()
     {
-        return await _context.Lockers.Include(nameof(LockerType)).Include(nameof(ParcelLocker)).ToListAsync();
+        var lockers = await _context.Lockers.ToListAsync();
+        foreach (var locker in lockers)
+        {
+            locker.LockerType = await _context.LockerTypes.FirstOrDefaultAsync(l => l.Id == locker.LockerTypeId);
+        }
+
+        return lockers;
     }
 
     public async Task<Locker?> GetLockerAsync(Guid lockerId)
     {
-        return await _context.Lockers.Include(nameof(LockerType)).Include(nameof(ParcelLocker)).FirstOrDefaultAsync(l => l.Id == lockerId);
+        var locker = await _context.Lockers.Include(nameof(LockerType)).FirstOrDefaultAsync(l => l.Id == lockerId);
+        locker.LockerType = await _context.LockerTypes.FirstOrDefaultAsync(l => l.Id == locker.LockerTypeId);
+        return locker;
     }
 
     public async Task UpdateLockerAsync(Locker locker)
@@ -64,7 +90,6 @@ public class SqlEmptyParcelLockerRepository : IEmptyParcelLockerRepository
             existingLocker.IsEmpty = locker.IsEmpty;
             existingLocker.LockerType = locker.LockerType;
             existingLocker.LockerTypeId = locker.LockerTypeId;
-            existingLocker.ParcelLocker = locker.ParcelLocker;
             existingLocker.ParcelLocerId = locker.ParcelLocerId;
         }
         else
