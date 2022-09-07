@@ -7,9 +7,9 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["EmptyParcelLocker.API.csproj", "."]
+COPY ["./EmptyParcelLocker.API/EmptyParcelLocker.API.csproj", "."]
 RUN dotnet restore "./EmptyParcelLocker.API.csproj"
-COPY . .
+COPY ./EmptyParcelLocker.API/ .
 WORKDIR "/src/."
 
 RUN dotnet dev-certs https --trust
@@ -28,6 +28,6 @@ RUN apt-get update
 RUN apt-get install -y dotnet-sdk-6.0
 RUN dotnet tool install -g dotnet-ef
 COPY --from=publish /app/publish .
-COPY . .
+COPY ./EmptyParcelLocker.API/ .
 RUN chmod +x prepare_db.sh
 ENTRYPOINT ./prepare_db.sh
