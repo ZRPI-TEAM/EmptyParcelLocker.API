@@ -20,6 +20,13 @@ RUN dotnet publish "EmptyParcelLocker.API.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
+RUN apt-get update && apt-get install wget -y
+RUN wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+RUN dpkg -i packages-microsoft-prod.deb
+RUN rm packages-microsoft-prod.deb
+RUN apt-get update
+RUN apt-get install -y dotnet-sdk-6.0
+RUN dotnet tool install -g dotnet-ef
 COPY --from=publish /app/publish .
 COPY . .
 RUN chmod +x prepare_db.sh
