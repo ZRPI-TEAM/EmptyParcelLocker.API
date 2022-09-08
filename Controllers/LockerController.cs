@@ -27,18 +27,15 @@ public class LockerController : Controller
         return Ok(await _emptyParcelLockerService.GetLockerAsync(lockerId));
     }
 
-    [HttpPut("/{locker}")]
-    public async Task<IActionResult> UpdateLocker(Locker locker)
+    [HttpPut()]
+    [Route("{lockerid:guid}}")]
+    public async Task<IActionResult> UpdateLockerEmptyStatusAsync([FromRoute] Guid lockerId, [FromBody] bool isEmpty)
     {
-        try
+        return await _emptyParcelLockerService.UpdateLockerEmptyStatusAsync(lockerId, isEmpty) switch
         {
-            await _emptyParcelLockerService.UpdateLockerAsync(locker);
-        }
-        catch(Exception e)
-        {
-            return BadRequest(e.Message);
-        }
-
-        return Ok();
+            NotFoundResult => NotFound(),
+            OkResult => Ok(),
+            _ => BadRequest(),
+        };
     }
 }

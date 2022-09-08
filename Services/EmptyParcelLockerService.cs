@@ -72,4 +72,9 @@ public class EmptyParcelLockerService : IEmptyParcelLockerService
         
         await _emptyParcelLockerRepository.UpdateLockerTypeAsync(lockerType);
     }
+
+    public async Task<IActionResult> UpdateLockerEmptyStatusAsync(Guid lockerId, bool isEmpty)
+    {
+        return await _emptyParcelLockerRepository.UpdateLockerEmptyStatusAsync(lockerId, isEmpty);
+    }
 }

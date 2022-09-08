@@ -1,5 +1,6 @@
 ﻿using EmptyParcelLocker.API.Data;
 using EmptyParcelLocker.API.Data.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmptyParcelLocker.API.Repositories;
@@ -129,5 +130,20 @@ public class SqlEmptyParcelLockerRepository : IEmptyParcelLockerRepository
         }
 
         await _context.SaveChangesAsync();
+    }
+
+    public async Task<IActionResult> UpdateLockerEmptyStatusAsync(Guid lockerId, bool isEmpty)
+    {
+        var locker = await _context.Lockers.FirstOrDefaultAsync(l => l.Id == lockerId);
+
+        if (locker == null)
+        {
+            return new NotFoundResult();
+        }
+        
+        locker.IsEmpty = isEmpty;
+        await _context.SaveChangesAsync();
+        
+        return new OkResult();
     }
 }
