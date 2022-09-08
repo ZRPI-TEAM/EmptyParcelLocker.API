@@ -27,8 +27,8 @@ public class LockerController : Controller
         return Ok(await _emptyParcelLockerService.GetLockerAsync(lockerId));
     }
 
-    [HttpPut()]
-    [Route("{lockerid:guid}}")]
+    [HttpPut]
+    [Route("{lockerid:guid}")]
     public async Task<IActionResult> UpdateLockerEmptyStatusAsync([FromRoute] Guid lockerId, [FromBody] bool isEmpty)
     {
         return await _emptyParcelLockerService.UpdateLockerEmptyStatusAsync(lockerId, isEmpty) switch

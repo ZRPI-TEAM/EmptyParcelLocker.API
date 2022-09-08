@@ -42,7 +42,7 @@ public class SqlEmptyParcelLockerRepository : IEmptyParcelLockerRepository
         return parcelLocker;
     }
 
-    public async Task UpdateParcelLockerAsync(ParcelLocker parcelLocker)
+    public async Task<IActionResult> UpdateParcelLockerAsync(ParcelLocker parcelLocker)
     {
         if (_context.ParcelLockers.Any(p => p.Id == parcelLocker.Id))
         {
@@ -52,6 +52,7 @@ public class SqlEmptyParcelLockerRepository : IEmptyParcelLockerRepository
             existingParcelLocker.Name = parcelLocker.Name;
             existingParcelLocker.Address = parcelLocker.Address;
             existingParcelLocker.Lockers = parcelLocker.Lockers;
+            existingParcelLocker.Coordinates = parcelLocker.Coordinates;
         }
         else
         {
@@ -59,6 +60,20 @@ public class SqlEmptyParcelLockerRepository : IEmptyParcelLockerRepository
         }
 
         await _context.SaveChangesAsync();
+
+        return new OkResult();
+    }
+
+    public async Task<Coordinates> GetParcelLockerCoordinatesAsync(Guid parcelLockerId)
+    {
+        var parcelLocker = await _context.ParcelLockers.FirstOrDefaultAsync(p => p.Id == parcelLockerId);
+
+        if (parcelLocker == null)
+        {
+            throw new NullReferenceException();
+        }
+
+        return parcelLocker.Coordinates;
     }
 
     public async Task<List<Locker>> GetLockersAsync()
