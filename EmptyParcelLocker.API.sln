@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmptyParcelLocker.API", "EmptyParcelLocker.API.csproj", "{E97454C7-E41E-4FFA-BF5E-1019470D2479}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmptyParcelLocker.API", "EmptyParcelLocker.API\EmptyParcelLocker.API.csproj", "{F9F6C4DD-7794-47B1-B8BC-74C66868021E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmptyParcelLocker.API.Test", "EmptyParcelLocker.API.Test\EmptyParcelLocker.API.Test.csproj", "{7AEB8A2D-E3BD-4C79-A66D-35C147424248}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -8,9 +10,13 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E97454C7-E41E-4FFA-BF5E-1019470D2479}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E97454C7-E41E-4FFA-BF5E-1019470D2479}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E97454C7-E41E-4FFA-BF5E-1019470D2479}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E97454C7-E41E-4FFA-BF5E-1019470D2479}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9F6C4DD-7794-47B1-B8BC-74C66868021E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9F6C4DD-7794-47B1-B8BC-74C66868021E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9F6C4DD-7794-47B1-B8BC-74C66868021E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9F6C4DD-7794-47B1-B8BC-74C66868021E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AEB8A2D-E3BD-4C79-A66D-35C147424248}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AEB8A2D-E3BD-4C79-A66D-35C147424248}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AEB8A2D-E3BD-4C79-A66D-35C147424248}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AEB8A2D-E3BD-4C79-A66D-35C147424248}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
