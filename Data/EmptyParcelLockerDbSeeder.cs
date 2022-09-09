@@ -31,48 +31,20 @@ public class EmptyParcelLockerDbSeeder
     private async Task SeedParcelLockersAndLockersAsync()
     {
         var parcelLockers = await _emptyParcelLockerService.GetParcelLockersAsync();
-        if (parcelLockers.Any() == false)
-        {
+        if (parcelLockers.Any())
             return;
-        }
-
-        var parcelLocker = new ParcelLocker
+        
+        var parcelLockersNumber = _random.Next(10, 31);
+        for (var i = 0; i < parcelLockersNumber; i++)
         {
-            Id = Guid.NewGuid(),
-            Name = "CSZ08M",
-            Coordinates = new Coordinates
+            var parcelLocker = await CreateNewParcelLockerAsync("KRA000", new[] {"Kwiatowa", "00", "", "00-000", "Kraków"});
+            await _emptyParcelLockerService.UpdateParcelLockerAsync(parcelLocker);
+
+            foreach (var locker in parcelLocker.Lockers)
             {
-              Id = Guid.NewGuid(),
-              X = 49.75751061244541,
-              Y = 18.622908899265347,
-            },
-            Address = "Frysztacka;61;;43-400;Cieszyn",
-        };
-
-        var lockers = await CreateNewLockersCollectionAsync(parcelLocker);
-        foreach (var locker in lockers)
-        {
-            await _emptyParcelLockerService.UpdateLockerAsync(locker);
-        }
-        
-        parcelLocker.Lockers = lockers;
-        await _emptyParcelLockerService.UpdateParcelLockerAsync(parcelLocker);
-        
-        // var parcelLockers = await _emptyParcelLockerService.GetParcelLockersAsync();
-        // if (parcelLockers.Any())
-        // return;
-
-        // var parcelLockersNumber = _random.Next(10, 31);
-        // for (var i = 0; i < parcelLockersNumber; i++)
-        // {
-        // var parcelLocker = await CreateNewParcelLockerAsync("KRA000", new[] {"Kwiatowa", "00", "", "00-000", "Kraków"});
-        // await _emptyParcelLockerService.UpdateParcelLockerAsync(parcelLocker);
-
-        // foreach (var locker in parcelLocker.Lockers)
-        // {
-        // await _emptyParcelLockerService.UpdateLockerAsync(locker);
-        // }
-        // } 
+                await _emptyParcelLockerService.UpdateLockerAsync(locker);
+            }
+        } 
     }
 
     private async Task<ParcelLocker> CreateNewParcelLockerAsync(string parcelLockerName, string[] parcelLockerAddress)
@@ -83,7 +55,7 @@ public class EmptyParcelLockerDbSeeder
             Name = parcelLockerName,
             Address = string.Join(';', parcelLockerAddress),
         };
-
+        
         parcelLocker.Lockers = await CreateNewLockersCollectionAsync(parcelLocker);
 
         return parcelLocker;
@@ -100,14 +72,14 @@ public class EmptyParcelLockerDbSeeder
             var randomLockerType = lockerTypes[_random.Next(0, 3)];
             lockers.Add(new Locker
             {
-                Id = Guid.NewGuid(),
-                IsEmpty = _random.Next(0, 100) % 2 == 0,
-                LockerType = randomLockerType,
+                Id = Guid.NewGuid(), 
+                IsEmpty = _random.Next(0, 100) % 2 == 0, 
+                LockerType = randomLockerType, 
                 LockerTypeId = randomLockerType.Id,
                 ParcelLocerId = parcelLocker.Id
             });
         }
-
+        
         return lockers;
     }
 
