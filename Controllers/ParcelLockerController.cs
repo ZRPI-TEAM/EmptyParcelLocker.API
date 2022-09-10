@@ -27,18 +27,16 @@ public class ParcelLockerController : Controller
         return Ok(await _emptyParcelLockerService.GetParcelLockerAsync(parcelLockerId));
     }
 
-    [HttpPut("{parcelLocker}")]
+    [HttpPut("{parcelLocker:guid}")]
     public async Task<IActionResult> UpdateParcelLocker(ParcelLocker parcelLocker)
     {
-        try
-        {
-            await _emptyParcelLockerService.UpdateParcelLockerAsync(parcelLocker);
-        }
-        catch (Exception e)
-        {
-            return BadRequest(e.Message);
-        }
+        return Ok(await _emptyParcelLockerService.UpdateParcelLockerAsync(parcelLocker));
+    }
 
-        return Ok();
+    [HttpGet]
+    [Route("Coordinates/{parcelLockerId:guid}")]
+    public async Task<IActionResult> GetParcelLockerCoordinatesAsync([FromRoute] Guid parcelLockerId)
+    {
+        return Ok(await _emptyParcelLockerService.GetParcelLockerCoordinatesAsync(parcelLockerId));
     }
 }

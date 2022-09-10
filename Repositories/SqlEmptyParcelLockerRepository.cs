@@ -1,5 +1,6 @@
 ﻿using EmptyParcelLocker.API.Data;
 using EmptyParcelLocker.API.Data.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmptyParcelLocker.API.Repositories;
@@ -41,7 +42,7 @@ public class SqlEmptyParcelLockerRepository : IEmptyParcelLockerRepository
         return parcelLocker;
     }
 
-    public async Task UpdateParcelLockerAsync(ParcelLocker parcelLocker)
+    public async Task<IActionResult> UpdateParcelLockerAsync(ParcelLocker parcelLocker)
     {
         if (_context.ParcelLockers.Any(p => p.Id == parcelLocker.Id))
         {
@@ -51,6 +52,7 @@ public class SqlEmptyParcelLockerRepository : IEmptyParcelLockerRepository
             existingParcelLocker.Name = parcelLocker.Name;
             existingParcelLocker.Address = parcelLocker.Address;
             existingParcelLocker.Lockers = parcelLocker.Lockers;
+            existingParcelLocker.Coordinates = parcelLocker.Coordinates;
         }
         else
         {
@@ -58,6 +60,20 @@ public class SqlEmptyParcelLockerRepository : IEmptyParcelLockerRepository
         }
 
         await _context.SaveChangesAsync();
+
+        return new OkResult();
+    }
+
+    public async Task<Coordinates> GetParcelLockerCoordinatesAsync(Guid parcelLockerId)
+    {
+        var parcelLocker = await _context.ParcelLockers.FirstOrDefaultAsync(p => p.Id == parcelLockerId);
+
+        if (parcelLocker == null)
+        {
+            throw new NullReferenceException();
+        }
+
+        return parcelLocker.Coordinates;
     }
 
     public async Task<List<Locker>> GetLockersAsync()
@@ -129,5 +145,20 @@ public class SqlEmptyParcelLockerRepository : IEmptyParcelLockerRepository
         }
 
         await _context.SaveChangesAsync();
+    }
+
+    public async Task<IActionResult> UpdateLockerEmptyStatusAsync(Guid lockerId, bool isEmpty)
+    {
+        var locker = await _context.Lockers.FirstOrDefaultAsync(l => l.Id == lockerId);
+
+        if (locker == null)
+        {
+            return new NotFoundResult();
+        }
+        
+        locker.IsEmpty = isEmpty;
+        await _context.SaveChangesAsync();
+        
+        return new OkResult();
     }
 }

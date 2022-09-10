@@ -23,14 +23,21 @@ public class EmptyParcelLockerService : IEmptyParcelLockerService
         return await _emptyParcelLockerRepository.GetParcelLockerAsync(parcelLockerId);
     }
 
-    public async Task UpdateParcelLockerAsync(ParcelLocker parcelLocker)
+    public async Task<IActionResult> UpdateParcelLockerAsync(ParcelLocker parcelLocker)
     {
         if (parcelLocker == null)
         {
-            throw new NullReferenceException();
+            return new NotFoundResult();
         }
-        
+            
         await _emptyParcelLockerRepository.UpdateParcelLockerAsync(parcelLocker);
+
+        return new OkResult();
+    }
+
+    public async Task<Coordinates> GetParcelLockerCoordinatesAsync(Guid parcelLockerId)
+    {
+        return await _emptyParcelLockerRepository.GetParcelLockerCoordinatesAsync(parcelLockerId);
     }
 
     public async Task<List<Locker>> GetLockersAsync()
@@ -71,5 +78,10 @@ public class EmptyParcelLockerService : IEmptyParcelLockerService
         }
         
         await _emptyParcelLockerRepository.UpdateLockerTypeAsync(lockerType);
+    }
+
+    public async Task<IActionResult> UpdateLockerEmptyStatusAsync(Guid lockerId, bool isEmpty)
+    {
+        return await _emptyParcelLockerRepository.UpdateLockerEmptyStatusAsync(lockerId, isEmpty);
     }
 }

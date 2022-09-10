@@ -19,5 +19,7 @@ public class ParcelLocker
     [Required]
     public string Address { get; set; }
 
+    public Coordinates Coordinates { get; set; }
+
     public ICollection<Locker> Lockers { get; set; }
 }
