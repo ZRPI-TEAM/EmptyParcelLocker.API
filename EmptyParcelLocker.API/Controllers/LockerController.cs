@@ -19,7 +19,7 @@ public class LockerController : Controller
     {
         var lockers = await _emptyParcelLockerService.GetLockersAsync();
         
-        if (lockers.Count == 0)
+        if (lockers.Count < 1)
         {
             return NoContent();
         }

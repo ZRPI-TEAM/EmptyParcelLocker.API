@@ -1,6 +1,7 @@
-﻿using EmptyParcelLocker.API.Data.Models;
+﻿using System.Collections.ObjectModel;
+using EmptyParcelLocker.API.Data.Models;
 
-namespace EmptyParcelLocker.API.Mocker.MockData;
+namespace EmptyParcelLocker.API.MockData;
 
 public static class LockerTypeMockData
 {
@@ -10,7 +11,7 @@ public static class LockerTypeMockData
         {
             new()
             {
-                Id = Guid.Parse("859a0307-989b-4d31-b210-9e181d12ccf0"),
+                Id = Guid.NewGuid(),
                 Name = "small",
                 MaxHeight = 80,
                 MaxWidth = 380,
@@ -20,7 +21,7 @@ public static class LockerTypeMockData
             
             new()
             {
-                Id = Guid.Parse("681e1d35-9444-48e0-b78e-c5800c0ffad6"),
+                Id = Guid.NewGuid(),
                 Name = "medium",
                 MaxHeight = 190,
                 MaxWidth = 380,
@@ -30,7 +31,7 @@ public static class LockerTypeMockData
             
             new()
             {
-                Id = Guid.Parse("5cd5339c-56ca-4360-bc74-e3592dc42ebb"),
+                Id = Guid.NewGuid(),
                 Name = "large",
                 MaxHeight = 410,
                 MaxWidth = 380,

@@ -10,9 +10,8 @@ public class Locker
     public bool IsEmpty { get; set; }
     
     [ForeignKey(nameof(ParcelLocker))]
-    public Guid ParcelLocerId { get; set; }
+    public Guid ParcelLockerId { get; set; }
     
     [ForeignKey(nameof(LockerType))] 
     public Guid LockerTypeId { get; set; }
-    public LockerType LockerType { get; set; }
 }

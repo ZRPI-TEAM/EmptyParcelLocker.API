@@ -19,7 +19,7 @@ public class ParcelLockerController : Controller
     public async Task<IActionResult> GetParcelLockersAsync()
     {
         var parcelLockers = await _emptyParcelLockerService.GetParcelLockersAsync();
-        if (parcelLockers.Count == 0)
+        if (parcelLockers.Count < 1)
         {
             return NoContent();
         }

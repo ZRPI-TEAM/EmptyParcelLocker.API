@@ -1,4 +1,5 @@
-﻿using EmptyParcelLocker.API.Data;
+﻿using System.Collections.ObjectModel;
+using EmptyParcelLocker.API.Data;
 using EmptyParcelLocker.API.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,33 +17,18 @@ public class SqlEmptyParcelLockerRepository : IEmptyParcelLockerRepository
 
     public async Task<List<ParcelLocker>> GetParcelLockersAsync()
     {
-        var parcelLockers = await _context.ParcelLockers.ToListAsync();
-        foreach (var parcelLocker in parcelLockers)
-        {
-            parcelLocker.Lockers = await _context.Lockers.Where(l => l.ParcelLocerId == parcelLocker.Id).ToListAsync();
-            foreach (var locker in parcelLocker.Lockers)
-            {
-                locker.LockerType = await _context.LockerTypes.FirstOrDefaultAsync(l => l.Id == locker.LockerTypeId);
-            }
-        }
-
-        return parcelLockers;
+        return await _context.ParcelLockers.ToListAsync();
     }
 
     public async Task<ParcelLocker?> GetParcelLockerAsync(Guid parcelLockerId)
     {
         var parcelLocker = await _context.ParcelLockers.FirstOrDefaultAsync(p => p.Id == parcelLockerId);
-        parcelLocker.Lockers = await _context.Lockers.Where(l => l.ParcelLocerId == parcelLocker.Id).ToListAsync();
+        parcelLocker.Lockers = await _context.Lockers.Where(l => l.ParcelLockerId == parcelLocker.Id).ToListAsync();
 
-        foreach (var locker in parcelLocker.Lockers)
-        {
-            locker.LockerType = await _context.LockerTypes.FirstOrDefaultAsync(l => l.Id == locker.LockerTypeId);
-        }
-        
         return parcelLocker;
     }
 
-    public async Task<IActionResult> UpdateParcelLockerAsync(ParcelLocker parcelLocker)
+    public async Task<ParcelLocker> UpdateParcelLockerAsync(ParcelLocker parcelLocker)
     {
         if (_context.ParcelLockers.Any(p => p.Id == parcelLocker.Id))
         {
@@ -61,7 +47,7 @@ public class SqlEmptyParcelLockerRepository : IEmptyParcelLockerRepository
 
         await _context.SaveChangesAsync();
 
-        return new OkResult();
+        return await _context.ParcelLockers.FirstAsync(p => p.Id == parcelLocker.Id);
     }
 
     public async Task<Coordinates> GetParcelLockerCoordinatesAsync(Guid parcelLockerId)
@@ -76,37 +62,45 @@ public class SqlEmptyParcelLockerRepository : IEmptyParcelLockerRepository
         return parcelLocker.Coordinates;
     }
 
-    public async Task<ICollection<Locker>> GetLockersAsync()
+    public async Task<List<Locker>> UpdateParcelLockerLockersAsync(Guid parcelLockerId, List<Locker> lockers)
     {
-        var lockers = await _context.Lockers.ToListAsync();
-        foreach (var locker in lockers)
+        var parcelLocker = await _context.ParcelLockers.FirstOrDefaultAsync(p => p.Id == parcelLockerId);
+        if(parcelLocker == null)
         {
-            locker.LockerType = await _context.LockerTypes.FirstOrDefaultAsync(l => l.Id == locker.LockerTypeId);
+            throw new KeyNotFoundException($"Could not get parcelLocker of Id {parcelLockerId}");
         }
 
+        foreach (var locker in lockers)
+        {
+            locker.ParcelLockerId = parcelLockerId;
+        }
+        parcelLocker.Lockers = lockers;
+
+        await _context.SaveChangesAsync();
+
+        return lockers;
+    }
+
+    public async Task<List<Locker>> GetLockersAsync()
+    {
+        var lockers = await _context.Lockers.ToListAsync();
         return lockers;
     }
 
     public async Task<Locker?> GetLockerAsync(Guid lockerId)
     {
-        var locker = await _context.Lockers.Include(nameof(LockerType)).FirstOrDefaultAsync(l => l.Id == lockerId);
-        locker.LockerType = await _context.LockerTypes.FirstOrDefaultAsync(l => l.Id == locker.LockerTypeId);
+        var locker = await _context.Lockers.FirstOrDefaultAsync(l => l.Id == lockerId);
         return locker;
     }
 
     public async Task UpdateLockerAsync(Locker locker)
     {
-        if (_context.Lockers.Any(l => l.Id == locker.Id))
+        if (await _context.Lockers.AnyAsync(l => l.Id == locker.Id))
         {
-            var existingLocker = await _context.Lockers
-                .Include(nameof(ParcelLocker))
-                .Include(nameof(LockerType))
-                .FirstAsync(l => l.Id == locker.Id);
-
+            var existingLocker = await _context.Lockers.FirstAsync(l => l.Id == locker.Id);
             existingLocker.IsEmpty = locker.IsEmpty;
-            existingLocker.LockerType = locker.LockerType;
             existingLocker.LockerTypeId = locker.LockerTypeId;
-            existingLocker.ParcelLocerId = locker.ParcelLocerId;
+            existingLocker.ParcelLockerId = locker.ParcelLockerId;
         }
         else
         {
@@ -114,6 +108,18 @@ public class SqlEmptyParcelLockerRepository : IEmptyParcelLockerRepository
         }
 
         await _context.SaveChangesAsync();
+    }
+
+    public async Task<List<Locker>> UpdateLockersAsync(List<Locker> lockers)
+    {
+        foreach (var locker in lockers)
+        {
+            if(_context.Lockers.Any(l => l.Id == locker.Id)) continue;
+
+            _context.Lockers.Add(locker);
+        }
+
+        return await _context.Lockers.ToListAsync();
     }
 
     public async Task<List<LockerType>> GetLockerTypesAsync()
@@ -145,6 +151,28 @@ public class SqlEmptyParcelLockerRepository : IEmptyParcelLockerRepository
         }
 
         await _context.SaveChangesAsync();
+    }
+
+    public async Task UpdateCoordinatesAsync(Coordinates coordinates)
+    {
+        var existingCoordinates = await _context.Coordinates.FirstOrDefaultAsync(c => c.Id == coordinates.Id);
+        if (existingCoordinates != null)
+        {
+            existingCoordinates.Id = coordinates.Id;
+            existingCoordinates.X = coordinates.X;
+            existingCoordinates.Y = coordinates.Y;
+        }
+        else
+        {
+            _context.Coordinates.Add(coordinates);
+        }
+
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task<List<Coordinates>> GetCoordinatesAsync()
+    {
+        return await _context.Coordinates.ToListAsync();
     }
 
     public async Task<IActionResult> UpdateLockerEmptyStatusAsync(Guid lockerId, bool isEmpty)

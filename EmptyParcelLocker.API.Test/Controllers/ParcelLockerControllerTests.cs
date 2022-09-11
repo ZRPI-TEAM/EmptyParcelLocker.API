@@ -1,5 +1,5 @@
 ﻿using EmptyParcelLocker.API.Controllers;
-using EmptyParcelLocker.API.Mocker.MockData;
+using EmptyParcelLocker.API.MockData;
 using EmptyParcelLocker.API.Services;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
@@ -22,5 +22,20 @@ public class ParcelLockerControllerTests
 
         // Assert
         result.StatusCode.Should().Be(200);
+    }
+    
+    [Fact]
+    public async Task GetParcelLockersAsync_ShouldReturnNoContentStatus()
+    {
+        // Arrange
+        var emptyParcelLockerService = new Mock<IEmptyParcelLockerService>();
+        emptyParcelLockerService.Setup(_ => _.GetParcelLockersAsync()).ReturnsAsync(ParcelLockerMockData.GetEmptyParcelLockerList());
+        var systemUnderTests = new ParcelLockerController(emptyParcelLockerService.Object);
+        
+        // Act
+        var result = (NoContentResult) await systemUnderTests.GetParcelLockersAsync();
+
+        // Assert
+        result.StatusCode.Should().Be(204);
     }
 }

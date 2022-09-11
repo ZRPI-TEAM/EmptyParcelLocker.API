@@ -1,5 +1,5 @@
 ﻿using EmptyParcelLocker.API.Controllers;
-using EmptyParcelLocker.API.Mocker.MockData;
+using EmptyParcelLocker.API.MockData;
 using EmptyParcelLocker.API.Services;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;

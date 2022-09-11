@@ -11,7 +11,6 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<EmptyParcelLockerDbContext>();
 builder.Services.AddScoped<IEmptyParcelLockerRepository, SqlEmptyParcelLockerRepository>();
 builder.Services.AddScoped<IEmptyParcelLockerService, EmptyParcelLockerService>();
-builder.Services.AddScoped<EmptyParcelLockerDbSeeder>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

@@ -1,56 +1,47 @@
-﻿using EmptyParcelLocker.API.Data.Models;
+﻿using System.Collections.ObjectModel;
+using EmptyParcelLocker.API.Data.Models;
 
-namespace EmptyParcelLocker.API.Mocker.MockData;
+namespace EmptyParcelLocker.API.MockData;
 
 public static class ParcelLockerMockData
 {
     private static readonly Random _random = new();
 
-    public static List<ParcelLocker> GetParcelLockers(int parcelLockersQuantity, int lockersQuantity)
+    public static List<ParcelLocker> GetParcelLockers(int parcelLockersQuantity, int lockersPerParcelLocker)
     {
         var parcelLockers = new List<ParcelLocker>();
 
         for (var i = 0; i < parcelLockersQuantity; i++)
         {
-            var lockers = LockerMockData.GetLockers(lockersQuantity);
-
             var parcelLocker = new ParcelLocker
             {
                 Id = Guid.NewGuid(),
-                Name = $"ParcelLocker{i}",
-                Address = $"street{i};houseNumber{i};ApartmentNumber{i};{i}{i}-{i}{i}{i};City{i}",
+                Name = $"ParcelLocker{0}",
+                Address = $"street{0};houseNumber{0};ApartmentNumber{0};{0}{0}-{0}{0}{0};City{0}",
+                Coordinates = CoordinatesMockData.GetCoordinates(),
+                Lockers = new List<Locker>(),
             };
 
-            foreach (var locker in lockers)
+            var mockedLockers = LockerMockData.GetLockers(lockersPerParcelLocker);
+            foreach (var locker in mockedLockers)
             {
-                locker.ParcelLocerId = parcelLocker.Id;
+                parcelLocker.Lockers.Add(new Locker
+                {
+                    Id = locker.Id,
+                    IsEmpty = locker.IsEmpty,
+                    LockerTypeId = locker.LockerTypeId,
+                    ParcelLockerId = parcelLocker.Id
+                });
             }
 
-            parcelLocker.Lockers = lockers;
             parcelLockers.Add(parcelLocker);
         }
 
         return parcelLockers;
     }
 
-    public static ParcelLocker GetParcelLocker(int lockersQuantity)
+    public static List<ParcelLocker> GetEmptyParcelLockerList()
     {
-        var lockers = LockerMockData.GetLockers(lockersQuantity);
-
-        var parcelLocker = new ParcelLocker
-        {
-            Id = Guid.NewGuid(),
-            Name = $"ParcelLocker{0}",
-            Address = $"street{0};houseNumber{0};ApartmentNumber{0};{0}{0}-{0}{0}{0};City{0}",
-        };
-
-        foreach (var locker in lockers)
-        {
-            locker.ParcelLocerId = parcelLocker.Id;
-        }
-
-        parcelLocker.Lockers = lockers;
-
-        return parcelLocker;
+        return new List<ParcelLocker>();
     }
 }

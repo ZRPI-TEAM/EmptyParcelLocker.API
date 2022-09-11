@@ -1,13 +1,12 @@
-﻿using System.Collections.ObjectModel;
-using EmptyParcelLocker.API.Data.Models;
+﻿using EmptyParcelLocker.API.Data.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EmptyParcelLocker.API.Data;
 
 public class EmptyParcelLockerDbContext : DbContext
 {
     private IConfiguration _configuration;
+    private readonly bool _selectDbOnConfiguring = true;
 
     public EmptyParcelLockerDbContext(DbContextOptions<EmptyParcelLockerDbContext> options, IConfiguration configuration) : base(options)
     {
@@ -19,7 +18,6 @@ public class EmptyParcelLockerDbContext : DbContext
         _selectDbOnConfiguring = selectDbOnConfiguring;
     }
 
-    private readonly bool _selectDbOnConfiguring = true;
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
@@ -33,37 +31,5 @@ public class EmptyParcelLockerDbContext : DbContext
     public DbSet<Locker> Lockers { get; set; }
     public DbSet<LockerType> LockerTypes { get; set; }
 
-    private List<Locker> CreateLockersForParcelLocker(ParcelLocker parcelLocker, LockerType[] lockerTypes)
-    {
-        var lockers = new List<Locker>();
-        var rand = new Random();
-        var lockerNumbers = rand.Next(12, 25);
-
-        for (var i = 0; i < lockerNumbers; i++)
-        {
-            var randomLockerType = lockerTypes[rand.Next(0, 3)];
-            var newLocker = new Locker
-            {
-                Id = Guid.NewGuid(),
-                IsEmpty = true,
-                LockerTypeId = randomLockerType.Id,
-                LockerType = randomLockerType,
-                ParcelLocerId = parcelLocker.Id,
-            };
-
-            lockers.Add(newLocker);
-        }
-
-        return lockers;
-    }
-
-    private ParcelLocker CreateNewParcelLocker(string name, string address)
-    {
-        return new ParcelLocker
-        {
-            Id = Guid.NewGuid(),
-            Name = name,
-            Address = address
-        };
-    }
+    public DbSet<Coordinates> Coordinates { get; set; }
 }

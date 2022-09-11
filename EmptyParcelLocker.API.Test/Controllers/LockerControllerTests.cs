@@ -1,6 +1,6 @@
 ﻿using EmptyParcelLocker.API.Controllers;
 using EmptyParcelLocker.API.Data.Models;
-using EmptyParcelLocker.API.Mocker.MockData;
+using EmptyParcelLocker.API.MockData;
 using EmptyParcelLocker.API.Services;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
@@ -26,6 +26,22 @@ public class LockerControllerTests
     }
     
     [Fact]
+    public async Task GetLockersAsync_ShouldReturnNoContent()
+    {
+        // Arrange
+        var emptyParcelLockerService = new Mock<IEmptyParcelLockerService>();
+        emptyParcelLockerService.Setup(_ => _.GetLockersAsync()).ReturnsAsync(LockerMockData.GetEmptyLockersList());
+        var sur = new LockerController(emptyParcelLockerService.Object);
+
+        // Act
+        var result = (NoContentResult) await sur.GetLockersAsync();
+
+        // Assert
+        result.StatusCode.Should().Be(204);
+
+    }
+    
+    [Fact]
     async Task UpdateLockerEmptyStatusAsync_ShouldChangeLockerIsEmptyProperty()
     {
         // Arrange
@@ -34,9 +50,8 @@ public class LockerControllerTests
         {
             Id = mockedLocker.Id,
             IsEmpty = !mockedLocker.IsEmpty,
-            LockerType = mockedLocker.LockerType,
             LockerTypeId = mockedLocker.LockerTypeId,
-            ParcelLocerId = mockedLocker.ParcelLocerId,
+            ParcelLockerId = mockedLocker.ParcelLockerId,
         };
 
         var emptyParcelLockerService = new Mock<IEmptyParcelLockerService>();

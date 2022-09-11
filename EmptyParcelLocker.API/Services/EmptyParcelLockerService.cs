@@ -23,16 +23,9 @@ public class EmptyParcelLockerService : IEmptyParcelLockerService
         return await _emptyParcelLockerRepository.GetParcelLockerAsync(parcelLockerId);
     }
 
-    public async Task<IActionResult> UpdateParcelLockerAsync(ParcelLocker parcelLocker)
+    public async Task<ParcelLocker> UpdateParcelLockerAsync(ParcelLocker parcelLocker)
     {
-        if (parcelLocker == null)
-        {
-            return new NotFoundResult();
-        }
-            
-        await _emptyParcelLockerRepository.UpdateParcelLockerAsync(parcelLocker);
-
-        return new OkResult();
+        return await _emptyParcelLockerRepository.UpdateParcelLockerAsync(parcelLocker);
     }
 
     public async Task<Coordinates> GetParcelLockerCoordinatesAsync(Guid parcelLockerId)
@@ -40,7 +33,20 @@ public class EmptyParcelLockerService : IEmptyParcelLockerService
         return await _emptyParcelLockerRepository.GetParcelLockerCoordinatesAsync(parcelLockerId);
     }
 
-    public async Task<ICollection<Locker>> GetLockersAsync()
+    public async Task<List<Locker>> UpdateParcelLockerLockersAsync(Guid parcelLockerId, List<Locker> lockers)
+    {
+        try
+        {
+            return await _emptyParcelLockerRepository.UpdateParcelLockerLockersAsync(parcelLockerId, lockers);
+        }
+        catch(KeyNotFoundException e)
+        {
+            Console.WriteLine(e.Message);
+            throw;
+        }
+    }
+
+    public async Task<List<Locker>> GetLockersAsync()
     {
         return await _emptyParcelLockerRepository.GetLockersAsync();
     }
@@ -58,6 +64,16 @@ public class EmptyParcelLockerService : IEmptyParcelLockerService
         }
         
         await _emptyParcelLockerRepository.UpdateLockerAsync(locker);
+    }
+
+    public async Task<List<Locker>> UpdateLockersAsync(List<Locker> lockers)
+    {
+        if (lockers.Count < 1)
+        {
+            throw new ArgumentNullException();
+        }
+
+        return await _emptyParcelLockerRepository.UpdateLockersAsync(lockers);
     }
 
     public async Task<List<LockerType>> GetLockerTypesAsync()
@@ -78,6 +94,16 @@ public class EmptyParcelLockerService : IEmptyParcelLockerService
         }
         
         await _emptyParcelLockerRepository.UpdateLockerTypeAsync(lockerType);
+    }
+
+    public async Task UpdateCoordinatesAsync(Coordinates coordinates)
+    {
+        await _emptyParcelLockerRepository.UpdateCoordinatesAsync(coordinates);
+    }
+
+    public async Task<List<Coordinates>> GetCoordinatesAsync()
+    {
+        return await _emptyParcelLockerRepository.GetCoordinatesAsync();
     }
 
     public async Task<IActionResult> UpdateLockerEmptyStatusAsync(Guid lockerId, bool isEmpty)

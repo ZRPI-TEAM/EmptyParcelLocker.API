@@ -1,26 +1,30 @@
 ﻿using EmptyParcelLocker.API.Data.Models;
+using EmptyParcelLocker.API.MockData;
 using EmptyParcelLocker.API.Services;
-using EmptyParcelLocker.API.Mocker.MockData;
+using EmptyParcelLocker.API.Repositories;
+using Microsoft.AspNetCore.Identity;
 
 namespace EmptyParcelLocker.API.Data;
 
-public class EmptyParcelLockerDbSeeder
+public static class EmptyParcelLockerDbSeeder
 {
-    private readonly Random _random = new();
-    private readonly IEmptyParcelLockerService _emptyParcelLockerService;
-
-    public EmptyParcelLockerDbSeeder(IEmptyParcelLockerService emptyParcelLockerService)
+    public static void SeedDatabase(IEmptyParcelLockerRepository emptyParcelLockerRepository, int parcelLockersQuantity = 10, int
+        lockersPerParcelLocker = 5)
     {
-        _emptyParcelLockerService = emptyParcelLockerService;
-    }
-
-    public async Task SeedAsync()
-    {
-        foreach (var lockerType in LockerTypeMockData.GetLockerTypes())
+        // Locker Types
+        if (emptyParcelLockerRepository.GetLockerTypesAsync().Result.Count < 1)
         {
-            await _emptyParcelLockerService.UpdateLockerTypeAsync(lockerType);
+            var lockerTypes = LockerTypeMockData.GetLockerTypes();
+            SeedLockerTypes(emptyParcelLockerRepository, lockerTypes);    
         }
         
+        // ParcelLockers
+        if (emptyParcelLockerRepository.GetParcelLockersAsync().Result.Count < 1)
+        {
+            var mockedParcelLockers = ParcelLockerMockData.GetParcelLockers(parcelLockersQuantity, lockersPerParcelLocker);
+            SeedParcelLockers(emptyParcelLockerRepository, mockedParcelLockers);    
+        }
+
         var parcelLockerCieszyn = new ParcelLocker
         {
             Id = Guid.Parse("22e88beb-98bb-4922-adba-538e86f5834b"),
@@ -29,30 +33,63 @@ public class EmptyParcelLockerDbSeeder
             Coordinates = new Coordinates
             {
                 Id = Guid.NewGuid(),
-                X = 49.75750794284093, 
+                X = 49.75750794284093,
                 Y = 18.62290616610615,
             },
-            Lockers = LockerMockData.GetLockers(30),
+            Lockers = new List<Locker>(),
         };
-        await AddParcelLockerWithLockersToDatabaseAsync(parcelLockerCieszyn);
 
-        var parcelLockersQuantity = 10;
-        var lockersPerParcelLocker = 15;
-        var parcelLockers = ParcelLockerMockData.GetParcelLockers(parcelLockersQuantity, lockersPerParcelLocker);
+        if (emptyParcelLockerRepository.GetParcelLockerAsync(parcelLockerCieszyn.Id).Result == null)
+        {
+            foreach (var locker in LockerMockData.GetLockers(30))
+            {
+                parcelLockerCieszyn.Lockers.Add(
+                    new Locker
+                    {
+                        Id = locker.Id,
+                        IsEmpty = locker.IsEmpty,
+                        LockerTypeId = locker.LockerTypeId,
+                        ParcelLockerId = parcelLockerCieszyn.Id
+                    });
+            }
         
+            SeedCustomParcelLocker(emptyParcelLockerRepository, parcelLockerCieszyn);
+        }
+        
+        
+
+        
+    }
+
+    public static void SeedCustomParcelLocker(IEmptyParcelLockerRepository emptyParcelLockerRepository, ParcelLocker parcelLocker)
+    {
+        emptyParcelLockerRepository.UpdateParcelLockerAsync(parcelLocker).Wait();
+        foreach (var locker in parcelLocker.Lockers)
+        {
+            emptyParcelLockerRepository.UpdateLockerAsync(locker).Wait();
+        }
+
+        emptyParcelLockerRepository.UpdateCoordinatesAsync(parcelLocker.Coordinates);
+    }
+
+    public static void SeedParcelLockers(IEmptyParcelLockerRepository emptyParcelLockerRepository, List<ParcelLocker>
+        parcelLockers)
+    {
         foreach (var parcelLocker in parcelLockers)
         {
-            await AddParcelLockerWithLockersToDatabaseAsync(parcelLocker);
+        //     emptyParcelLockerRepository.UpdateCoordinatesAsync(parcelLocker.Coordinates).Wait();
+        //
+        //     emptyParcelLockerRepository.UpdateLockersAsync(parcelLocker.Lockers.ToList()).Wait();
+
+            emptyParcelLockerRepository.UpdateParcelLockerAsync(parcelLocker).Wait();
         }
     }
 
-    private async Task AddParcelLockerWithLockersToDatabaseAsync(ParcelLocker parcelLocker)
+    public static void SeedLockerTypes(IEmptyParcelLockerRepository emptyParcelLockerRepository, List<LockerType> lockerTypes)
     {
-        foreach (var locker in parcelLocker.Lockers)
+        foreach (var lockerType in lockerTypes)
         {
-            await _emptyParcelLockerService.UpdateLockerAsync(locker);
+            emptyParcelLockerRepository.UpdateLockerTypeAsync(lockerType).Wait();
         }
-
-        await _emptyParcelLockerService.UpdateParcelLockerAsync(parcelLocker);
     }
 }
