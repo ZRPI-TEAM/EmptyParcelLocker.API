@@ -5,5 +5,5 @@ namespace EmptyParcelLocker.API.Repositories;
 
 public interface IEmptyParcelLockerRepository
 {
-    
+    Task<List<Coordinates>> GetAllCoordinatesAsync();
 }

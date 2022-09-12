@@ -14,4 +14,9 @@ public class SqlEmptyParcelLockerRepository : IEmptyParcelLockerRepository
     {
         _context = context;
     }
+
+    public async Task<List<Coordinates>> GetAllCoordinatesAsync()
+    {
+        return await _context.Coordinates.ToListAsync();
+    }
 }
