@@ -57,10 +57,6 @@ public static class EmptyParcelLockerDbSeeder
         
             SeedCustomParcelLocker(emptyParcelLockerRepository, parcelLockerCieszyn);
         }
-        
-        
-
-        
     }
 
     public static void SeedCustomParcelLocker(IEmptyParcelLockerRepository emptyParcelLockerRepository, ParcelLocker parcelLocker)
