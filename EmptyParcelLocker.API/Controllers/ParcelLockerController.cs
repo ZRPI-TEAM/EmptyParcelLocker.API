@@ -1,5 +1,6 @@
 ﻿using EmptyParcelLocker.API.Data.Models;
 using EmptyParcelLocker.API.Services;
+using EmptyParcelLocker.API.Services.ParcelLocker;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmptyParcelLocker.API.Controllers;
@@ -8,10 +9,10 @@ namespace EmptyParcelLocker.API.Controllers;
 [Route("[controller]")]
 public class ParcelLockerController : Controller
 {
-    private readonly IEmptyParcelLockerService _emptyParcelLockerService;
+    private readonly IParcelLockerService _parcelLockerService;
 
-    public ParcelLockerController(IEmptyParcelLockerService emptyParcelLockerService)
+    public ParcelLockerController(IParcelLockerService parcelLockerService)
     {
-        _emptyParcelLockerService = emptyParcelLockerService;
+        _parcelLockerService = parcelLockerService;
     }
 }

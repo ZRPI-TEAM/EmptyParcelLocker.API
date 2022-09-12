@@ -1,4 +1,5 @@
 ﻿using EmptyParcelLocker.API.Services;
+using EmptyParcelLocker.API.Services.Locker;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmptyParcelLocker.API.Controllers;
@@ -7,10 +8,10 @@ namespace EmptyParcelLocker.API.Controllers;
 [Route("[controller]")]
 public class LockerController : Controller
 {
-    private readonly IEmptyParcelLockerService _emptyParcelLockerService;
+    private readonly ILockerService _lockerService;
 
-    public LockerController(IEmptyParcelLockerService emptyParcelLockerService)
+    public LockerController(ILockerService lockerService)
     {
-        _emptyParcelLockerService = emptyParcelLockerService;
+        _lockerService = lockerService;
     }
 }

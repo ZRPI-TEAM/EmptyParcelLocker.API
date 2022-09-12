@@ -6,34 +6,39 @@
     <projectFile profileName="IIS Express">EmptyParcelLocker.API/EmptyParcelLocker.API.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e025b03c-42c1-4257-951b-a2e9bce81fe3" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/EmptyParcelLocker.API/Data/Models/Address.cs" afterDir="false" />
+    <list default="true" id="e025b03c-42c1-4257-951b-a2e9bce81fe3" name="Changes" comment="Remove old definitions to prepare for refactorize.">
+      <change afterPath="$PROJECT_DIR$/EmptyParcelLocker.API/Controllers/AddressController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/EmptyParcelLocker.API/Services/Address/IAddressService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/EmptyParcelLocker.API/Services/Coordinates/ICoordinatesService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/EmptyParcelLocker.API/Services/Locker/ILockerService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/EmptyParcelLocker.API/Services/LockerType/ILockerTypeService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/EmptyParcelLocker.API/Services/ParcelLocker/IParcelLockerService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.EmptyParcelLocker.API/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.EmptyParcelLocker.API/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmptyParcelLocker.API.Test/Controllers/LockerControllerTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EmptyParcelLocker.API.Test/Controllers/LockerControllerTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmptyParcelLocker.API.Test/Controllers/LockerTypeControllerTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EmptyParcelLocker.API.Test/Controllers/LockerTypeControllerTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmptyParcelLocker.API.Test/Controllers/ParcelLockerControllerTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EmptyParcelLocker.API.Test/Controllers/ParcelLockerControllerTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmptyParcelLocker.API.Test/DataTests/EmptyParcelLockerDbSeederTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EmptyParcelLocker.API.Test/DataTests/EmptyParcelLockerDbSeederTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmptyParcelLocker.API.Test/Repositories/EmptyParcelLockerRepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EmptyParcelLocker.API.Test/Repositories/EmptyParcelLockerRepositoryTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EmptyParcelLocker.API.Test/Controllers/LockerControllerTests.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/EmptyParcelLocker.API.Test/Controllers/LockerTypeControllerTests.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/EmptyParcelLocker.API.Test/Controllers/ParcelLockerControllerTests.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/EmptyParcelLocker.API.Test/DataTests/EmptyParcelLockerDbSeederTests.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/EmptyParcelLocker.API.Test/Repositories/EmptyParcelLockerRepositoryTests.cs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/EmptyParcelLocker.API/Controllers/CoordinatesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EmptyParcelLocker.API/Controllers/CoordinatesController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EmptyParcelLocker.API/Controllers/LockerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EmptyParcelLocker.API/Controllers/LockerController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EmptyParcelLocker.API/Controllers/LockerTypeController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EmptyParcelLocker.API/Controllers/LockerTypeController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EmptyParcelLocker.API/Controllers/ParcelLockerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EmptyParcelLocker.API/Controllers/ParcelLockerController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmptyParcelLocker.API/Data/EmptyParcelLockerDbSeeder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EmptyParcelLocker.API/Data/EmptyParcelLockerDbSeeder.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmptyParcelLocker.API/Data/Models/Coordinates.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EmptyParcelLocker.API/Data/Models/Coordinates.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmptyParcelLocker.API/Data/Models/Locker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EmptyParcelLocker.API/Data/Models/Locker.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmptyParcelLocker.API/Data/Models/LockerType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EmptyParcelLocker.API/Data/Models/LockerType.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmptyParcelLocker.API/Data/Models/ParcelLocker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EmptyParcelLocker.API/Data/Models/ParcelLocker.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmptyParcelLocker.API/MockData/CoordinatesMockData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EmptyParcelLocker.API/MockData/CoordinatesMockData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmptyParcelLocker.API/MockData/LockerMockData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EmptyParcelLocker.API/MockData/LockerMockData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmptyParcelLocker.API/MockData/ParcelLockerMockData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EmptyParcelLocker.API/MockData/ParcelLockerMockData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmptyParcelLocker.API/Repositories/IEmptyParcelLockerRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EmptyParcelLocker.API/Repositories/IEmptyParcelLockerRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmptyParcelLocker.API/Repositories/SqlEmptyParcelLockerRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EmptyParcelLocker.API/Repositories/SqlEmptyParcelLockerRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmptyParcelLocker.API/Services/EmptyParcelLockerService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EmptyParcelLocker.API/Services/EmptyParcelLockerService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EmptyParcelLocker.API/Data/EmptyParcelLockerDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EmptyParcelLocker.API/Data/EmptyParcelLockerDbContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EmptyParcelLocker.API/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EmptyParcelLocker.API/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EmptyParcelLocker.API/Services/EmptyParcelLockerService.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/EmptyParcelLocker.API/Services/IEmptyParcelLockerService.cs" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$USER_HOME$/.nuget/packages/microsoft.net.test.sdk/17.1.0/build/netcoreapp2.1/Microsoft.NET.Test.Sdk.Program.cs" root0="SKIP_HIGHLIGHTING" />
@@ -133,7 +138,7 @@
       <workItem from="1662867047876" duration="7220000" />
       <workItem from="1662877416959" duration="2126000" />
       <workItem from="1662973414193" duration="2895000" />
-      <workItem from="1662979708282" duration="6972000" />
+      <workItem from="1662979708282" duration="9731000" />
     </task>
     <task id="LOCAL-00001" summary="Reorganize repo structure">
       <created>1662717067465</created>
@@ -170,7 +175,14 @@
       <option name="project" value="LOCAL" />
       <updated>1662985267101</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Remove old definitions to prepare for refactorize.">
+      <created>1662991216257</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1662991216257</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -211,7 +223,8 @@
     <MESSAGE value="Create CoordinatesController.cs, Fix SqlEmptyParcelLockerRepository.cs's GetParcelLocker and GetParcelLockers does not include coordinates and lockers." />
     <MESSAGE value="Fix null reference exception in DbSeeder." />
     <MESSAGE value="Add GetParcelLockerByCoordinatesAsync as endpoint and add ParcelLokerId to Coordinates entity." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add GetParcelLockerByCoordinatesAsync as endpoint and add ParcelLokerId to Coordinates entity." />
+    <MESSAGE value="Remove old definitions to prepare for refactorize." />
+    <option name="LAST_COMMIT_MESSAGE" value="Remove old definitions to prepare for refactorize." />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

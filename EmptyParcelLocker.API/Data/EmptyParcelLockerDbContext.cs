@@ -5,31 +5,12 @@ namespace EmptyParcelLocker.API.Data;
 
 public class EmptyParcelLockerDbContext : DbContext
 {
-    private IConfiguration _configuration;
-    private readonly bool _selectDbOnConfiguring = true;
-
-    public EmptyParcelLockerDbContext(DbContextOptions<EmptyParcelLockerDbContext> options, IConfiguration configuration) : base(options)
-    {
-        _configuration = configuration;
-    }
-
-    public EmptyParcelLockerDbContext(DbContextOptions<EmptyParcelLockerDbContext> options, bool selectDbOnConfiguring) : base(options)
-    {
-        _selectDbOnConfiguring = selectDbOnConfiguring;
-    }
-
-
-    protected override void OnConfiguring(DbContextOptionsBuilder options)
-    {
-        if (_selectDbOnConfiguring)
-        {
-            options.UseSqlServer(_configuration.GetConnectionString("ParcelLockerDb"));
-        }
-    }
+    public EmptyParcelLockerDbContext(DbContextOptions<EmptyParcelLockerDbContext> options) : base(options)
+    { }
 
     public DbSet<ParcelLocker> ParcelLockers { get; set; }
     public DbSet<Locker> Lockers { get; set; }
     public DbSet<LockerType> LockerTypes { get; set; }
-
     public DbSet<Coordinates> Coordinates { get; set; }
+    public DbSet<Address> Addresses { get; set; }
 }

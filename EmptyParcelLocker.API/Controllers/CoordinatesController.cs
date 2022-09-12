@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using EmptyParcelLocker.API.Services;
+using EmptyParcelLocker.API.Services.Coordinates;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmptyParcelLocker.API.Controllers
@@ -8,10 +9,10 @@ namespace EmptyParcelLocker.API.Controllers
     [Route("[controller]")]
     public class CoordinatesController : Controller
     {
-        private readonly IEmptyParcelLockerService _emptyParcelLockerService;
-        public CoordinatesController(IEmptyParcelLockerService emptyParcelLockerService)
+        private readonly ICoordinatesService _coordinatesService;
+        public CoordinatesController(ICoordinatesService coordinatesService)
         {
-            _emptyParcelLockerService = emptyParcelLockerService;
+            _coordinatesService = coordinatesService;
         }
     }
 }
