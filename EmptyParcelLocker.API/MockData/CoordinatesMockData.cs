@@ -8,11 +8,6 @@ public static class CoordinatesMockData
     
     public static Coordinates GetCoordinates()
     {
-        return new Coordinates
-        {
-            Id = Guid.NewGuid(),
-            X = Random.Next(-180, 181),
-            Y = Random.Next(-90, 91),
-        };
+        throw new NotImplementedException();
     }
 }

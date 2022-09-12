@@ -13,32 +13,5 @@ namespace EmptyParcelLocker.API.Controllers
         {
             _emptyParcelLockerService = emptyParcelLockerService;
         }
-        
-        [HttpGet]
-        [Route("all")]
-        public async Task<IActionResult> GetAllCoordinates()
-        {
-            var coordinates = await _emptyParcelLockerService.GetCoordinatesAsync();
-            if (coordinates.Count < 1)
-            {
-                return NoContent();
-            }
-
-            return Ok(coordinates);
-        }
-
-        [HttpGet]
-        [Route("{coordinatesId: guid}")]
-        public async Task<IActionResult> GetParcelLockerByCoordinates([FromRoute] Guid coordinatesId)
-        {
-            var parcelLocker = await _emptyParcelLockerService.GetParcelLockerByCoordinatesAsync(coordinatesId);
-
-            if (parcelLocker == null)
-            {
-                return NoContent();
-            }
-
-            return Ok(parcelLocker);
-        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Data;
 using EmptyParcelLocker.API.Data.Models;
 
 namespace EmptyParcelLocker.API.MockData;
@@ -9,38 +10,12 @@ public static class LockerMockData
     
     public static List<Locker> GetLockers(int quantity)
     {
-        var lockerTypes = LockerTypeMockData.GetLockerTypes();
-        var lockers = new List<Locker>();
-
-        for (var i = 0; i < quantity; i++)
-        {
-            var randomLockerType = lockerTypes.ToList()[Random.Next(0, 3)];
-            var locker = new Locker
-            {
-                Id = Guid.NewGuid(),
-                IsEmpty = Random.Next(0, 100) % 2 == 0,
-                LockerTypeId = randomLockerType.Id,
-            };
-            
-            lockers.Add(locker);
-        }
-
-        return lockers;
+        throw new NotImplementedException();
     }
 
     public static Locker GetLocker()
     {
-        var lockerTypes = LockerTypeMockData.GetLockerTypes();
-        var randomLockerType =  lockerTypes.ToList()[Random.Next(0, 3)];
-        var locker = new Locker
-        {
-            Id = Guid.NewGuid(),
-            IsEmpty = Random.Next(0, 100) % 2 == 0,
-            LockerTypeId = randomLockerType.Id,
-            ParcelLockerId = Guid.NewGuid(),
-        };
-
-        return locker;
+        throw new NotImplementedException();
     }
 
     public static List<Locker> GetEmptyLockersList()
