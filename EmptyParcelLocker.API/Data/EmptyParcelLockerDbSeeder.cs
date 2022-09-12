@@ -19,11 +19,13 @@ public static class EmptyParcelLockerDbSeeder
         }
         
         // ParcelLockers
-        if (emptyParcelLockerRepository.GetParcelLockersAsync().Result.Count < 1)
-        {
-            var mockedParcelLockers = ParcelLockerMockData.GetParcelLockers(parcelLockersQuantity, lockersPerParcelLocker);
-            SeedParcelLockers(emptyParcelLockerRepository, mockedParcelLockers);    
-        }
+        // TODO: Uncomment to enable seeding parcel lockers
+        
+        // if (emptyParcelLockerRepository.GetParcelLockersAsync().Result.Count < 1)
+        // {
+        //     var mockedParcelLockers = ParcelLockerMockData.GetParcelLockers(parcelLockersQuantity, lockersPerParcelLocker);
+        //     SeedParcelLockers(emptyParcelLockerRepository, mockedParcelLockers);    
+        // }
 
         var parcelLockerCieszyn = new ParcelLocker
         {
