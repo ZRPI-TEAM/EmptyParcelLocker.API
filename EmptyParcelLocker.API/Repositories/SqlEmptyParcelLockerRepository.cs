@@ -17,12 +17,19 @@ public class SqlEmptyParcelLockerRepository : IEmptyParcelLockerRepository
 
     public async Task<List<ParcelLocker>> GetParcelLockersAsync()
     {
-        return await _context.ParcelLockers.ToListAsync();
+        var parcelLockers = await _context.ParcelLockers.Include(nameof(Coordinates)).ToListAsync();
+        foreach (var parcelLocker in parcelLockers)
+        {
+            var lockers = await _context.Lockers.Where(l => l.ParcelLockerId == parcelLocker.Id).ToListAsync();
+            parcelLocker.Lockers = lockers;
+        }
+
+        return parcelLockers;
     }
 
     public async Task<ParcelLocker?> GetParcelLockerAsync(Guid parcelLockerId)
     {
-        var parcelLocker = await _context.ParcelLockers.FirstOrDefaultAsync(p => p.Id == parcelLockerId);
+        var parcelLocker = await _context.ParcelLockers.Include(nameof(Coordinates)).FirstOrDefaultAsync(p => p.Id == parcelLockerId);
         parcelLocker.Lockers = await _context.Lockers.Where(l => l.ParcelLockerId == parcelLocker.Id).ToListAsync();
 
         return parcelLocker;
