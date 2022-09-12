@@ -1,4 +1,5 @@
-﻿using EmptyParcelLocker.API.Services;
+﻿using System.Net;
+using EmptyParcelLocker.API.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmptyParcelLocker.API.Controllers
@@ -24,6 +25,20 @@ namespace EmptyParcelLocker.API.Controllers
             }
 
             return Ok(coordinates);
+        }
+
+        [HttpGet]
+        [Route("{coordinatesId: guid}")]
+        public async Task<IActionResult> GetParcelLockerByCoordinates([FromRoute] Guid coordinatesId)
+        {
+            var parcelLocker = await _emptyParcelLockerService.GetParcelLockerByCoordinatesAsync(coordinatesId);
+
+            if (parcelLocker == null)
+            {
+                return NoContent();
+            }
+
+            return Ok(parcelLocker);
         }
     }
 }

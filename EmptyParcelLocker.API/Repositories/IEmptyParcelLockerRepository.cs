@@ -6,6 +6,7 @@ namespace EmptyParcelLocker.API.Repositories;
 public interface IEmptyParcelLockerRepository
 {
     // Parcel Lockers
+    Task<ParcelLocker?> GetParcelLockerByCoordinatesAsync(Guid coordinatesId);
     Task<List<ParcelLocker>> GetParcelLockersAsync();
     Task<ParcelLocker?> GetParcelLockerAsync(Guid parcelLockerId);
     Task<ParcelLocker> UpdateParcelLockerAsync(ParcelLocker parcelLocker);

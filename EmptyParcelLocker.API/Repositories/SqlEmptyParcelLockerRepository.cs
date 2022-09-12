@@ -15,6 +15,11 @@ public class SqlEmptyParcelLockerRepository : IEmptyParcelLockerRepository
         _context = context;
     }
 
+    public async Task<ParcelLocker?> GetParcelLockerByCoordinatesAsync(Guid coordinatesId)
+    {
+        return await _context.ParcelLockers.FirstOrDefaultAsync(p => p.Coordinates.Id == coordinatesId);
+    }
+
     public async Task<List<ParcelLocker>> GetParcelLockersAsync()
     {
         var parcelLockers = await _context.ParcelLockers.Include(nameof(Coordinates)).ToListAsync();

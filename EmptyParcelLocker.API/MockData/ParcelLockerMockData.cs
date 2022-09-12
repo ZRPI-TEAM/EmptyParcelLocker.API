@@ -13,14 +13,17 @@ public static class ParcelLockerMockData
 
         for (var i = 0; i < parcelLockersQuantity; i++)
         {
+            var mockedCoordinates = CoordinatesMockData.GetCoordinates();
             var parcelLocker = new ParcelLocker
             {
                 Id = Guid.NewGuid(),
                 Name = $"ParcelLocker{0}",
                 Address = $"street{0};houseNumber{0};ApartmentNumber{0};{0}{0}-{0}{0}{0};City{0}",
-                Coordinates = CoordinatesMockData.GetCoordinates(),
+                Coordinates = mockedCoordinates,
                 Lockers = new List<Locker>(),
             };
+
+            parcelLocker.Coordinates.ParcelLockerId = parcelLocker.Id;
 
             var mockedLockers = LockerMockData.GetLockers(lockersPerParcelLocker);
             foreach (var locker in mockedLockers)

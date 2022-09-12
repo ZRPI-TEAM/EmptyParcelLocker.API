@@ -13,6 +13,11 @@ public class EmptyParcelLockerService : IEmptyParcelLockerService
         _emptyParcelLockerRepository = emptyParcelLockerRepository;
     }
 
+    public Task<ParcelLocker?> GetParcelLockerByCoordinatesAsync(Guid coordinatesId)
+    {
+        return _emptyParcelLockerRepository.GetParcelLockerByCoordinatesAsync(coordinatesId);
+    }
+
     public async Task<List<ParcelLocker>> GetParcelLockersAsync()
     {
         return await _emptyParcelLockerRepository.GetParcelLockersAsync();

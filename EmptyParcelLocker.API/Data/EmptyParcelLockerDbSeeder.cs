@@ -41,6 +41,8 @@ public static class EmptyParcelLockerDbSeeder
             Lockers = new List<Locker>(),
         };
 
+        parcelLockerCieszyn.Coordinates.ParcelLockerId = parcelLockerCieszyn.Id;
+
         if (emptyParcelLockerRepository.GetParcelLockerAsync(parcelLockerCieszyn.Id).Result == null)
         {
             foreach (var locker in LockerMockData.GetLockers(30))
