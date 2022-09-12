@@ -30,7 +30,13 @@ public class ParcelLockerController : Controller
     [HttpGet("{parcelLockerId:guid}")]
     public async Task<IActionResult> GetParcelLockerAsync(Guid parcelLockerId)
     {
-        return Ok(await _emptyParcelLockerService.GetParcelLockerAsync(parcelLockerId));
+        var parcelLocker = await _emptyParcelLockerService.GetParcelLockerAsync(parcelLockerId);
+        if (parcelLocker == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(parcelLocker);
     }
 
     [HttpPut("{parcelLocker:guid}")]

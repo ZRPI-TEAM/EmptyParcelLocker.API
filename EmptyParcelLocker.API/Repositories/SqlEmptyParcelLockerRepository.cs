@@ -30,9 +30,14 @@ public class SqlEmptyParcelLockerRepository : IEmptyParcelLockerRepository
     public async Task<ParcelLocker?> GetParcelLockerAsync(Guid parcelLockerId)
     {
         var parcelLocker = await _context.ParcelLockers.Include(nameof(Coordinates)).FirstOrDefaultAsync(p => p.Id == parcelLockerId);
-        parcelLocker.Lockers = await _context.Lockers.Where(l => l.ParcelLockerId == parcelLocker.Id).ToListAsync();
 
-        return parcelLocker;
+        if (parcelLocker != null)
+        {
+            parcelLocker.Lockers = await _context.Lockers.Where(l => l.ParcelLockerId == parcelLocker.Id).ToListAsync();
+            return parcelLocker;    
+        }
+
+        return null;
     }
 
     public async Task<ParcelLocker> UpdateParcelLockerAsync(ParcelLocker parcelLocker)
