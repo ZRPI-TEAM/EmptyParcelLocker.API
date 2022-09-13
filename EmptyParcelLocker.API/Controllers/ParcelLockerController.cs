@@ -1,5 +1,6 @@
-﻿using EmptyParcelLocker.API.Data.Models;
-using EmptyParcelLocker.API.Services;
+﻿using EmptyParcelLocker.API.CustomExceptions;
+using EmptyParcelLocker.API.Domain;
+using EmptyParcelLocker.API.Services.ParcelLocker;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmptyParcelLocker.API.Controllers;
@@ -8,47 +9,27 @@ namespace EmptyParcelLocker.API.Controllers;
 [Route("[controller]")]
 public class ParcelLockerController : Controller
 {
-    private readonly IEmptyParcelLockerService _emptyParcelLockerService;
+    private readonly IParcelLockerService _parcelLockerService;
 
-    public ParcelLockerController(IEmptyParcelLockerService emptyParcelLockerService)
+    public ParcelLockerController(IParcelLockerService parcelLockerService)
     {
-        _emptyParcelLockerService = emptyParcelLockerService;
-    }
-    
-    [HttpGet("all")]
-    public async Task<IActionResult> GetParcelLockersAsync()
-    {
-        var parcelLockers = await _emptyParcelLockerService.GetParcelLockersAsync();
-        if (parcelLockers.Count < 1)
-        {
-            return NoContent();
-        }
-
-        return Ok(parcelLockers);
-    }
-
-    [HttpGet("{parcelLockerId:guid}")]
-    public async Task<IActionResult> GetParcelLockerAsync(Guid parcelLockerId)
-    {
-        var parcelLocker = await _emptyParcelLockerService.GetParcelLockerAsync(parcelLockerId);
-        if (parcelLocker == null)
-        {
-            return NotFound();
-        }
-
-        return Ok(parcelLocker);
-    }
-
-    [HttpPut("{parcelLocker:guid}")]
-    public async Task<IActionResult> UpdateParcelLocker(ParcelLocker parcelLocker)
-    {
-        return Ok(await _emptyParcelLockerService.UpdateParcelLockerAsync(parcelLocker));
+        _parcelLockerService = parcelLockerService;
     }
 
     [HttpGet]
-    [Route("Coordinates/{parcelLockerId:guid}")]
-    public async Task<IActionResult> GetParcelLockerCoordinatesAsync([FromRoute] Guid parcelLockerId)
+    [Route("all")]
+    public async Task<IActionResult> GetAllParcelLockersAsync()
     {
-        return Ok(await _emptyParcelLockerService.GetParcelLockerCoordinatesAsync(parcelLockerId));
+        try
+        {
+            var parcelLockers = await _parcelLockerService.GetAllParcelLockersAsync();
+            var mappedParcelLockers = await Mapper.MapParcelLockerList(parcelLockers, _parcelLockerService);
+            return Ok(mappedParcelLockers);
+        }
+        catch (NoContentException e)
+        {
+            Console.WriteLine(e.Message);
+            return NoContent();
+        }
     }
 }

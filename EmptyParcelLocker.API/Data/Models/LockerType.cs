@@ -5,10 +5,7 @@ namespace EmptyParcelLocker.API.Data.Models;
 
 public class LockerType
 {
-    [Key]
-    public Guid Id { get; set; }
-    
-    [Required]
+    [Key] public Guid Id { get; set; }
     public string Name { get; set; }
     public int MaxHeight { get; set; }
     public int MaxWidth { get; set; }
