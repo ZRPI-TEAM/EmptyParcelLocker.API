@@ -1,7 +1,7 @@
 using EmptyParcelLocker.API.Data;
-using EmptyParcelLocker.API.ExtensionMethods;
 using EmptyParcelLocker.API.Repositories;
-using EmptyParcelLocker.API.Services;
+using EmptyParcelLocker.API.Services.Locker;
+using EmptyParcelLocker.API.Services.ParcelLocker;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,7 +12,8 @@ builder.Services.AddControllers();
 ConfigurationManager configuration = builder.Configuration;
 builder.Services.AddScoped<IEmptyParcelLockerRepository, SqlEmptyParcelLockerRepository>();
 
-// TODO: AddScoped services
+builder.Services.AddScoped<ILockerService, LockerService>();
+builder.Services.AddScoped<IParcelLockerService, ParcelLockerService>();
 
 builder.Services.AddDbContext<EmptyParcelLockerDbContext>(options =>
     options.UseSqlServer(configuration.GetConnectionString("ParcelLockerDb")));
@@ -22,7 +23,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-app.SeedDatabase();
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

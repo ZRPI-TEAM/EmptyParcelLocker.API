@@ -1,5 +1,5 @@
-﻿using EmptyParcelLocker.API.Data.Models;
-using EmptyParcelLocker.API.Services;
+﻿using EmptyParcelLocker.API.CustomExceptions;
+using EmptyParcelLocker.API.Domain;
 using EmptyParcelLocker.API.Services.ParcelLocker;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,5 +14,22 @@ public class ParcelLockerController : Controller
     public ParcelLockerController(IParcelLockerService parcelLockerService)
     {
         _parcelLockerService = parcelLockerService;
+    }
+
+    [HttpGet]
+    [Route("all")]
+    public async Task<IActionResult> GetAllParcelLockersAsync()
+    {
+        try
+        {
+            var parcelLockers = await _parcelLockerService.GetAllParcelLockersAsync();
+            var mappedParcelLockers = await Mapper.MapParcelLockerList(parcelLockers, _parcelLockerService);
+            return Ok(mappedParcelLockers);
+        }
+        catch (NoContentException e)
+        {
+            Console.WriteLine(e.Message);
+            return NoContent();
+        }
     }
 }
