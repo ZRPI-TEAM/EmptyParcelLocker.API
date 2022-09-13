@@ -1,25 +1,16 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.CompilerServices;
 
 namespace EmptyParcelLocker.API.Data.Models;
 
 public class ParcelLocker
 {
-    public ParcelLocker()
-    {
-        Lockers = new Collection<Locker>();
-    }
-    
-    [Key]
-    public Guid Id { get; set; }
-    
-    [Required]
-    public string Name { get; set; }
-    
-    [Required]
-    public string Address { get; set; }
-
-    public Coordinates Coordinates { get; set; }
-
-    public ICollection<Locker> Lockers { get; set; }
+    [Key] public Guid Id { get; set; }
+    public string Name { get; set; } 
+    [ForeignKey(nameof(Address))] 
+    public Guid AddressId { get; set; }
+    public double Longitude { get; set; }
+    public double Latitude { get; set; }
 }

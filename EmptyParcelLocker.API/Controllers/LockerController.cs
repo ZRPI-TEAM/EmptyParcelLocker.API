@@ -1,4 +1,6 @@
-﻿using EmptyParcelLocker.API.Services;
+﻿using EmptyParcelLocker.API.CustomExceptions;
+using EmptyParcelLocker.API.Domain;
+using EmptyParcelLocker.API.Services.Locker;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmptyParcelLocker.API.Controllers;
@@ -7,41 +9,48 @@ namespace EmptyParcelLocker.API.Controllers;
 [Route("[controller]")]
 public class LockerController : Controller
 {
-    private readonly IEmptyParcelLockerService _emptyParcelLockerService;
-
-    public LockerController(IEmptyParcelLockerService emptyParcelLockerService)
+    private readonly ILockerService _lockerService;
+    public LockerController(ILockerService lockerService)
     {
-        _emptyParcelLockerService = emptyParcelLockerService;
+        _lockerService = lockerService;
     }
 
-    [HttpGet("all")]
-    public async Task<IActionResult> GetLockersAsync()
+    [HttpGet]
+    [Route("{parcelLockerId:guid}")]
+    public async Task<IActionResult> GetLockersOfParcelLockerAsync([FromRoute] Guid parcelLockerId)
     {
-        var lockers = await _emptyParcelLockerService.GetLockersAsync();
-        
-        if (lockers.Count < 1)
+        try
         {
+            var lockers = await _lockerService.GetLockersOfParcelLockerAsync(parcelLockerId);
+            var mappedLockers = await Mapper.MapLockerListAsync(lockers, _lockerService);
+            return Ok(mappedLockers);
+        }
+        catch (NoContentException e)
+        {
+            Console.WriteLine(e.Message);
             return NoContent();
         }
-        
-        return Ok(lockers);
-    }
-
-    [HttpGet("{lockerId:guid}")]
-    public async Task<IActionResult> GetLockerAsync(Guid lockerId)
-    {
-        return Ok(await _emptyParcelLockerService.GetLockerAsync(lockerId));
+        catch (NotFoundException e)
+        {
+            Console.WriteLine(e.Message);
+            return NotFound();
+        }
     }
 
     [HttpPut]
-    [Route("{lockerid:guid}")]
+    [Route("{lockerId:guid}")]
     public async Task<IActionResult> UpdateLockerEmptyStatusAsync([FromRoute] Guid lockerId, [FromBody] bool isEmpty)
     {
-        return await _emptyParcelLockerService.UpdateLockerEmptyStatusAsync(lockerId, isEmpty) switch
+        try
         {
-            NotFoundResult => NotFound(),
-            OkResult => Ok(),
-            _ => BadRequest(),
-        };
+            var updatedLocker = await _lockerService.UpdateLockerEmptyStatusAsync(lockerId, isEmpty);
+            var mappedUpdatedLocker = await Mapper.MapLockerAsync(updatedLocker, _lockerService);
+            return Ok(mappedUpdatedLocker);
+        }
+        catch (NotFoundException e)
+        {
+            Console.WriteLine(e.Message);
+            return NotFound();
+        }
     }
 }
